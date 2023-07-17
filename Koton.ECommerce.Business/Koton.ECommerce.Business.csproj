@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Koton.ECommerce.DataAccess\Koton.ECommerce.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>
