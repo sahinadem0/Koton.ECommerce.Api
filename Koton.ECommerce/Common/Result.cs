@@ -6,6 +6,12 @@
         {
         }
 
+        public Result(bool v1, string v2)
+        {
+            IsSuccess = v1;
+            Message = v2;
+        }
+
         public Result(bool isSuccess, string message, T data)
         {
             IsSuccess = isSuccess;

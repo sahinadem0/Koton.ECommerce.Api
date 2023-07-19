@@ -75,6 +75,51 @@ namespace Koton.ECommerce.Business.Services.Concrete
             // The product was found.
             return new Result<GetProductDto>(true, "The product was found.", product);
         }
+
+        public async Task<Result<GetProductDto>> AddProductAsync(CreateProductDto product)
+        {
+            try
+            {
+                var createdProduct = await _productRepository.AddProduct(product);
+                return new Result<GetProductDto>(true, "The product was added successfully.", createdProduct);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occurred during product creation.
+                return new Result<GetProductDto>(false, "An error occurred while adding the product: " + ex.Message);
+            }
+        }
+
+
+        public async Task<Result<GetProductDto>> UpdateProductAsync(int id, UpdateProductDto product)
+        {
+            try
+            {
+                var updatedProduct = await _productRepository.UpdateProduct(id, product);
+                return new Result<GetProductDto>(true, "The product was updated successfully.", updatedProduct);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occurred during product update.
+                return new Result<GetProductDto>(false, "An error occurred while updating the product: " + ex.Message);
+            }
+        }
+
+        public async Task<Result<object>> DeleteProductAsync(int id)
+        {
+            try
+            {
+                await _productRepository.DeleteProduct(id);
+                return new Result<object>(true, "The product was deleted successfully.", null);
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occurred during product deletion.
+                return new Result<object>(false, "An error occurred while deleting the product: " + ex.Message, null);
+            }
+        }
+
+
     }
 
 

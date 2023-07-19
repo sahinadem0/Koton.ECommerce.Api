@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Koton.ECommerce.Core.DTOs
 {
-    public class UpdateProductDto
+    public class CreateProductDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public decimal DiscountPrice { get; set; }

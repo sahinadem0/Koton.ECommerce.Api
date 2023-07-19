@@ -12,6 +12,9 @@ namespace Koton.ECommerce.DataAccess.Repositories.Abstract
 
         Task<IEnumerable<GetProductDto>> GetProducts();
         Task<GetProductDto> GetProductById(int id);
+        Task<GetProductDto> AddProduct(CreateProductDto product);
+        Task<GetProductDto> UpdateProduct(int id, UpdateProductDto product);
+        Task DeleteProduct(int id);
 
     }
 }

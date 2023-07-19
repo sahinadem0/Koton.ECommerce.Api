@@ -52,22 +52,42 @@ namespace Koton.ECommerce.Api.Controllers
             }
         }
 
-        // POST api/<ProductController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(CreateProductDto product)
+        {
+            var result = await _productService.AddProductAsync(product);
+            if (result.IsSuccess)
+            {
+                return CreatedAtRoute("GetProductById", new { productId = result.Data.Id }, result.Data);
+            }
+            else
+                return BadRequest(result.Message);
+        }
 
-        // PUT api/<ProductController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        [HttpPut("{productId}")]
+        public async Task<IActionResult> UpdateProduct(int productId, UpdateProductDto product)
+        {
+            var result = await _productService.UpdateProductAsync(productId, product);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Data);
+            }
+            else
+                return BadRequest(result.Message);
+        }
 
-        // DELETE api/<ProductController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        [HttpDelete("{productId}")]
+        public async Task<IActionResult> DeleteProduct(int productId)
+        {
+            var result = await _productService.DeleteProductAsync(productId);
+            if (result.IsSuccess)
+            {
+                return NoContent();
+            }
+            else
+                return BadRequest(result.Message);
+        }
+
+
     }
 }
