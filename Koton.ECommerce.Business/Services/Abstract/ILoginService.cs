@@ -4,6 +4,6 @@ namespace Koton.ECommerce.Business.Services.Abstract
 {
     public interface ILoginService
     {
-        Task<Result<bool>> LoginAsync(string username, string password);
+        Task<Result<string>> LoginAsync(string email, string password);
     }
 }

@@ -15,10 +15,10 @@ namespace Koton.ECommerce.Api.Controllers
             _loginService = loginService;
         }
 
-        [HttpGet("GetToken")]
+        [HttpPost("SignIn")]
         public async Task<IActionResult> GetToken([FromBody] UserInfoDto userInfoDto)
         {
-            var token = await _loginService.LoginAsync(userInfoDto.UserName, userInfoDto.Password);
+            var token = await _loginService.LoginAsync(userInfoDto.Email, userInfoDto.PasswordHash);
             if(token.IsSuccess)
             {
                 return Ok(token);

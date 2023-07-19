@@ -7,14 +7,16 @@ namespace Koton.ECommerce.DataAccess.Repositories.Concrete
 {
     public class LoginRepository : ILoginRepository
     {
-
         public async Task<UserInfoDto> GetUserInfoAsync(string username, string password)
         {
-            using (var connection = new SqlConnection("Server=;Database=;Integrated Security = true; MultipleActiveResultSets = True;TrustServerCertificate=true; Application Name = Koton.ECommerce "))
+            using (var connection = new SqlConnection("Server=DESKTOP-UIC5F07\\SQLEXPRESS;Database=kotonECommerce;Integrated Security=true;MultipleActiveResultSets=True;TrustServerCertificate=true;Application Name=Koton.ECommerce"))
             {
-                var userInfo = await connection.QueryFirstOrDefaultAsync<UserInfoDto>(sql: " Select UserName, Password,IsActive from Users Where Username =  ",
-                    // dapper ile sorgu çalıştırıken, parametre kullanımı
-                    commandTimeout: 3000);
+                // Filter the query based on the provided username and password.
+                var userInfo = await connection.QueryFirstOrDefaultAsync<UserInfoDto>(
+                    sql: "SELECT Username, PasswordHash, Email FROM Users WHERE Username = @Username AND PasswordHash = @PasswordHash",
+                    param: new { Username = username, PasswordHash = password },
+                    commandTimeout: 0);
+
                 return userInfo;
             }
         }
