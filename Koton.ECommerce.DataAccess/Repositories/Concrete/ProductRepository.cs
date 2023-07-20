@@ -39,7 +39,9 @@ namespace Koton.ECommerce.DataAccess.Repositories.Concrete
             using (var connection = new SqlConnection("Server=DESKTOP-UIC5F07\\SQLEXPRESS;Database=kotonECommerce;Integrated Security=true;MultipleActiveResultSets=True;TrustServerCertificate=true;Application Name=Koton.ECommerce"))
             {
                 // Insert the new product into the database.
-                var productId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Name, Description, Price) VALUES (@Name, @Description, @Price); SELECT SCOPE_IDENTITY();", product);
+                //var productId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Id,Name,Price,DiscountPrice, Description,ImageUrl,Brand,UserId ) VALUES (@Id,@Name,@Price,@DiscountPrice, @Description,@ImageUrl,@Brand,@UserId); SELECT SCOPE_IDENTITY();", product);
+                var productId = await connection.ExecuteScalarAsync<int>("INSERT INTO Products (Id,Name,Price,DiscountPrice, Description,ImageUrl,Brand,UserId ) OUTPUT INSERTED.Id VALUES (@Id,@Name,@Price,@DiscountPrice, @Description,@ImageUrl,@Brand,@UserId);", product);
+
 
                 // Retrieve the newly created product.
                 var createdProduct = await GetProductById(productId);
