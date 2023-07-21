@@ -82,7 +82,7 @@ namespace Koton.ECommerce.Api.Controllers
             var result = await _productService.DeleteProductAsync(productId);
             if (result.IsSuccess)
             {
-                return NoContent();
+                return Ok(result.Message);
             }
             else
                 return BadRequest(result.Message);

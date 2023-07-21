@@ -2,19 +2,22 @@
 using Koton.ECommerce.Core.DTOs;
 using Koton.ECommerce.DataAccess.Repositories.Abstract;
 using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Koton.ECommerce.DataAccess.Repositories.Concrete
 {
     public class ProductRepository : IProductRepository
     {
+        private readonly IConfiguration _config;
+        public ProductRepository(IConfiguration config)
+        {
+                _config = config;
+        }
         public async Task<IEnumerable<GetProductDto>> GetProducts()
         {
-            using (var connection = new SqlConnection("Server=DESKTOP-UIC5F07\\SQLEXPRESS;Database=kotonECommerce;Integrated Security=true;MultipleActiveResultSets=True;TrustServerCertificate=true;Application Name=Koton.ECommerce"))
+            var connStr = _config.GetSection("ConnectionStrings:ConnStr").Value;
+
+            using (var connection = new SqlConnection(connStr))
             {
                 // Retrieve all products.
                 var products = await connection.QueryAsync<GetProductDto>("SELECT * FROM Products");
@@ -55,7 +58,8 @@ namespace Koton.ECommerce.DataAccess.Repositories.Concrete
             using (var connection = new SqlConnection("Server=DESKTOP-UIC5F07\\SQLEXPRESS;Database=kotonECommerce;Integrated Security=true;MultipleActiveResultSets=True;TrustServerCertificate=true;Application Name=Koton.ECommerce"))
             {
                 // Update the product in the database.
-                await connection.ExecuteAsync("UPDATE Products SET Name = @Name, Description = @Description, Price = @Price WHERE Id = @Id", new { Id = id, product.Name, product.Description, product.Price });
+                await connection.ExecuteAsync("UPDATE Products SET Name = @Name, Description = @Description, Price = @Price WHERE Id = @Id",
+                   new { Id = id, product.Name, product.Description, product.Price });
 
                 // Retrieve the updated product.
                 var updatedProduct = await GetProductById(id);
